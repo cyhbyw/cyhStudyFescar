@@ -30,20 +30,10 @@ public abstract class AbstractTransactionResponse extends AbstractResultMessage 
 
     private TransactionExceptionCode transactionExceptionCode = TransactionExceptionCode.Unknown;
 
-    /**
-     * Gets transaction exception code.
-     *
-     * @return the transaction exception code
-     */
     public TransactionExceptionCode getTransactionExceptionCode() {
         return transactionExceptionCode;
     }
 
-    /**
-     * Sets transaction exception code.
-     *
-     * @param transactionExceptionCode the transaction exception code
-     */
     public void setTransactionExceptionCode(TransactionExceptionCode transactionExceptionCode) {
         this.transactionExceptionCode = transactionExceptionCode;
     }
@@ -68,5 +58,10 @@ public abstract class AbstractTransactionResponse extends AbstractResultMessage 
         }
         transactionExceptionCode = TransactionExceptionCode.get(in.readByte());
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractTransactionResponse{" + super.toString() + "}";
     }
 }

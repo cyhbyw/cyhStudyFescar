@@ -31,38 +31,18 @@ public class GlobalBeginResponse extends AbstractTransactionResponse {
 
     private String extraData;
 
-    /**
-     * Gets xid.
-     *
-     * @return the xid
-     */
     public String getXid() {
         return xid;
     }
 
-    /**
-     * Sets xid.
-     *
-     * @param xid the xid
-     */
     public void setXid(String xid) {
         this.xid = xid;
     }
 
-    /**
-     * Gets extra data.
-     *
-     * @return the extra data
-     */
     public String getExtraData() {
         return extraData;
     }
 
-    /**
-     * Sets extra data.
-     *
-     * @param extraData the extra data
-     */
     public void setExtraData(String extraData) {
         this.extraData = extraData;
     }
@@ -114,5 +94,11 @@ public class GlobalBeginResponse extends AbstractTransactionResponse {
             byteBuffer.get(bs);
             setExtraData(new String(bs, UTF8));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "GlobalBeginResponse{" + super.toString() + ", xid='" + xid + '\'' + ", extraData='" + extraData + '\''
+                + '}';
     }
 }

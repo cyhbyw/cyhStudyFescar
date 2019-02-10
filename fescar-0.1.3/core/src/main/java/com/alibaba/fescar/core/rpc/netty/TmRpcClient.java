@@ -194,7 +194,11 @@ public final class TmRpcClient extends AbstractRpcRemotingClient {
         String serverAddress = XID.getServerAddress(RootContext.getXID());
         String validAddress = serverAddress != null ? serverAddress : loadBalance();
         Channel acquireChannel = connect(validAddress);
+
+        LOGGER.debug("Send_msg_with_response. validAddress: {}, msg: {}, timeout: {}", validAddress, msg, timeout);
         Object result = super.sendAsyncRequestWithResponse(validAddress, acquireChannel, msg, timeout);
+        LOGGER.debug("Send_msg_with_response. result: {}", result);
+
         if (result instanceof GlobalBeginResponse
                 && ((GlobalBeginResponse) result).getResultCode() == ResultCode.Failed) {
             LOGGER.error("begin response error, release channel: " + acquireChannel);

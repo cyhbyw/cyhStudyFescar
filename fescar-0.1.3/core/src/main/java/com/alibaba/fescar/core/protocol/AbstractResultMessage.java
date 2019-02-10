@@ -32,54 +32,27 @@ import io.netty.buffer.ByteBuf;
 public abstract class AbstractResultMessage extends AbstractMessage implements MergedMessage {
     private static final long serialVersionUID = 6540352050650203313L;
 
-    private ResultCode resultCode;
-
-    /**
-     * The Byte buffer.
-     */
     public ByteBuffer byteBuffer = ByteBuffer.allocate(512);
 
-    /**
-     * Gets result code.
-     *
-     * @return the result code
-     */
+    private ResultCode resultCode;
+    private String msg;
+
     public ResultCode getResultCode() {
         return resultCode;
     }
 
-    /**
-     * Sets result code.
-     *
-     * @param resultCode the result code
-     */
     public void setResultCode(ResultCode resultCode) {
         this.resultCode = resultCode;
     }
 
-    private String msg;
-
-    /**
-     * Gets msg.
-     *
-     * @return the msg
-     */
     public String getMsg() {
         return msg;
     }
 
-    /**
-     * Sets msg.
-     *
-     * @param msg the msg
-     */
     public void setMsg(String msg) {
         this.msg = msg;
     }
 
-    /**
-     * Do encode.
-     */
     protected void doEncode() {
         byteBuffer.put((byte) resultCode.ordinal());
         if (resultCode == ResultCode.Failed) {
@@ -157,5 +130,10 @@ public abstract class AbstractResultMessage extends AbstractMessage implements M
             }
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractResultMessage{" + "resultCode=" + resultCode + ", msg='" + msg + '\'' + '}';
     }
 }
