@@ -104,13 +104,7 @@ public abstract class AbstractGlobalEndRequest extends AbstractTransactionReques
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append("transactionId=");
-        result.append(transactionId);
-        result.append(",");
-        result.append("extraData=");
-        result.append(extraData);
-
-        return result.toString();
+        return "AbstractGlobalEndRequest{" + "transactionId=" + transactionId + ", extraData='" + extraData + '\''
+                + '}';
     }
 }
