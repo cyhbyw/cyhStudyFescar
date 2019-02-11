@@ -243,8 +243,7 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         }
         channelWriteableCheck(channel, msg);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("write message: " + rpcMessage.getBody() + ", channel: " + channel + ", active: "
-                    + channel.isActive() + ", writable: " + channel.isWritable() + ", isOpen: " + channel.isOpen());
+            LOGGER.debug("Will_send_rpc_request. {}", rpcMessage);
         }
         channel.writeAndFlush(rpcMessage);
     }
@@ -258,7 +257,7 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         rpcMessage.setId(msgId);
         channelWriteableCheck(channel, msg);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("send response: " + rpcMessage.getBody() + ", channel: " + channel);
+            LOGGER.debug("Will_send_rpc_response: " + rpcMessage.getBody() + ", channel: " + channel);
         }
         channel.writeAndFlush(rpcMessage);
     }

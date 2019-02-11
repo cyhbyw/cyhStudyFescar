@@ -337,9 +337,7 @@ public final class RmRpcClient extends AbstractRpcRemotingClient {
         Channel channelFromPool = null;
         try {
             String resourceIds = customerKeys == null ? getMergedResourceKeys(resourceManager) : customerKeys;
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("RM will register :" + resourceIds);
-            }
+            LOGGER.info("RM_will_register. resourceIds: " + resourceIds);
             RegisterRMRequest message = null;
             if (null == poolKeyMap.get(serverAddress)) {
                 message = new RegisterRMRequest(applicationId, transactionServiceGroup);
@@ -420,15 +418,13 @@ public final class RmRpcClient extends AbstractRpcRemotingClient {
      * @param resourceId      the db key
      */
     public void registerResource(String resourceGroupId, String resourceId) {
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("register to RM resourceId:" + resourceId);
-        }
+        LOGGER.info("Register_to_RM. resourceId: " + resourceId);
         synchronized (channels) {
             for (Map.Entry<String, Channel> entry : channels.entrySet()) {
                 String serverAddress = entry.getKey();
                 Channel rmChannel = entry.getValue();
                 if (LOGGER.isInfoEnabled()) {
-                    LOGGER.info("register AT resourceId:" + resourceId);
+                    LOGGER.info("register_AT resourceId: " + resourceId);
                 }
                 sendRegisterMessage(serverAddress, rmChannel, resourceId);
             }
@@ -465,10 +461,8 @@ public final class RmRpcClient extends AbstractRpcRemotingClient {
     public void onRegisterMsgSuccess(String serverAddress, Channel channel, Object response,
             AbstractMessage requestMessage) {
 
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("register RM success. server version:" + ((RegisterRMResponse) response).getVersion()
-                    + ",channel:" + channel);
-        }
+        LOGGER.info("Register_RM_success. server version: " + ((RegisterRMResponse) response).getVersion()
+                + ", channel: " + channel);
         if (customerKeys == null) {
             synchronized (channels) {
                 channels.put(serverAddress, channel);
