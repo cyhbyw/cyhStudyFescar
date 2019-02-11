@@ -109,9 +109,7 @@ public class DefaultServerMessageListenerImpl implements ServerMessageListener {
             LOGGER.error(exx.getMessage());
         }
         sender.sendResponse(msgId, ctx.channel(), new RegisterRMResponse(isSuccess));
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("rm register success, message: " + message + ", channel: " + ctx.channel());
-        }
+        LOGGER.info("RM_register_success. message: " + message + ", channel: " + ctx.channel());
     }
 
     @Override

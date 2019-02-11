@@ -76,12 +76,11 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
     /**
      * The Futures.
      */
-    protected final ConcurrentHashMap<Long, MessageFuture> futures = new ConcurrentHashMap<Long, MessageFuture>();
+    protected final ConcurrentHashMap<Long, MessageFuture> futures = new ConcurrentHashMap<>();
     /**
      * The Basket map.
      */
-    protected final ConcurrentHashMap<String, BlockingQueue<RpcMessage>> basketMap =
-            new ConcurrentHashMap<String, BlockingQueue<RpcMessage>>();
+    protected final ConcurrentHashMap<String, BlockingQueue<RpcMessage>> basketMap = new ConcurrentHashMap<>();
 
     private static final long NOT_WRITEABLE_CHECK_MILLS = 10L;
     /**
@@ -102,24 +101,16 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
     /**
      * The Merge msg map.
      */
-    protected final Map<Long, MergeMessage> mergeMsgMap = new ConcurrentHashMap<Long, MergeMessage>();
+    protected final Map<Long, MergeMessage> mergeMsgMap = new ConcurrentHashMap<>();
     /**
      * The Channel handlers.
      */
     protected ChannelHandler[] channelHandlers;
 
-    /**
-     * Instantiates a new Abstract rpc remoting.
-     *
-     * @param messageExecutor the message executor
-     */
     public AbstractRpcRemoting(ThreadPoolExecutor messageExecutor) {
         this.messageExecutor = messageExecutor;
     }
 
-    /**
-     * Init.
-     */
     public void init() {
         timerExecutor.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -143,9 +134,6 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         }, TIMEOUT_CHECK_INTERNAL, TIMEOUT_CHECK_INTERNAL, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * Destroy.
-     */
     public void destroy() {
         timerExecutor.shutdown();
     }
@@ -161,29 +149,10 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         ctx.fireChannelWritabilityChanged();
     }
 
-    /**
-     * Send async request with response object.
-     *
-     * @param address the address
-     * @param channel the channel
-     * @param msg     the msg
-     * @return the object
-     * @throws TimeoutException the timeout exception
-     */
     protected Object sendAsyncRequestWithResponse(String address, Channel channel, Object msg) throws TimeoutException {
         return sendAsyncRequestWithResponse(address, channel, msg, NettyClientConfig.getRpcRequestTimeout());
     }
 
-    /**
-     * Send async request with response object.
-     *
-     * @param address the address
-     * @param channel the channel
-     * @param msg     the msg
-     * @param timeout the timeout
-     * @return the object
-     * @throws TimeoutException the timeout exception
-     */
     protected Object sendAsyncRequestWithResponse(String address, Channel channel, Object msg, long timeout)
             throws TimeoutException {
         if (timeout <= 0) {
@@ -192,15 +161,6 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         return sendAsyncRequest(address, channel, msg, timeout);
     }
 
-    /**
-     * Send async request without response object.
-     *
-     * @param address the address
-     * @param channel the channel
-     * @param msg     the msg
-     * @return the object
-     * @throws TimeoutException the timeout exception
-     */
     protected Object sendAsyncRequestWithoutResponse(String address, Channel channel, Object msg)
             throws TimeoutException {
         return sendAsyncRequest(address, channel, msg, 0);
@@ -271,12 +231,6 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         }
     }
 
-    /**
-     * Send request.
-     *
-     * @param channel the channel
-     * @param msg     the msg
-     */
     protected void sendRequest(Channel channel, Object msg) {
         RpcMessage rpcMessage = new RpcMessage();
         rpcMessage.setAsync(true);
@@ -289,19 +243,12 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         }
         channelWriteableCheck(channel, msg);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("write message:" + rpcMessage.getBody() + ", channel:" + channel + ",active?"
-                    + channel.isActive() + ",writable?" + channel.isWritable() + ",isopen?" + channel.isOpen());
+            LOGGER.debug("write message: " + rpcMessage.getBody() + ", channel: " + channel + ", active: "
+                    + channel.isActive() + ", writable: " + channel.isWritable() + ", isOpen: " + channel.isOpen());
         }
         channel.writeAndFlush(rpcMessage);
     }
 
-    /**
-     * Send response.
-     *
-     * @param msgId   the msg id
-     * @param channel the channel
-     * @param msg     the msg
-     */
     protected void sendResponse(long msgId, Channel channel, Object msg) {
         RpcMessage rpcMessage = new RpcMessage();
         rpcMessage.setAsync(true);
@@ -311,7 +258,7 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         rpcMessage.setId(msgId);
         channelWriteableCheck(channel, msg);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("send response:" + rpcMessage.getBody() + ",channel:" + channel);
+            LOGGER.debug("send response: " + rpcMessage.getBody() + ", channel: " + channel);
         }
         channel.writeAndFlush(rpcMessage);
     }
@@ -345,11 +292,9 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         if (msg instanceof RpcMessage) {
             final RpcMessage rpcMessage = (RpcMessage) msg;
             if (rpcMessage.isRequest()) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(String.format("%s msgId:%s, body:%s", this, rpcMessage.getId(), rpcMessage.getBody()));
-                }
+                LOGGER.debug("Request rpcMessage: {}", rpcMessage);
                 try {
-                    AbstractRpcRemoting.this.messageExecutor.execute(new Runnable() {
+                    messageExecutor.execute(new Runnable() {
                         @Override
                         public void run() {
                             try {
@@ -376,15 +321,12 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
                 }
             } else {
                 MessageFuture messageFuture = futures.remove(rpcMessage.getId());
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(String.format("%s msgId:%s, future :%s, body:%s", this, rpcMessage.getId(),
-                            messageFuture, rpcMessage.getBody()));
-                }
+                LOGGER.debug("Not request rpcMessage: {}, messageFuture: {}", rpcMessage, messageFuture);
                 if (messageFuture != null) {
                     messageFuture.setResultMessage(rpcMessage.getBody());
                 } else {
                     try {
-                        AbstractRpcRemoting.this.messageExecutor.execute(new Runnable() {
+                        messageExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
                                 try {
@@ -424,78 +366,34 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
         super.close(ctx, future);
     }
 
-    /**
-     * Add channel pipeline last.
-     *
-     * @param channel  the channel
-     * @param handlers the handlers
-     */
     protected void addChannelPipelineLast(Channel channel, ChannelHandler... handlers) {
         if (null != channel && null != handlers) {
             channel.pipeline().addLast(handlers);
         }
     }
 
-    /**
-     * Sets channel handlers.
-     *
-     * @param handlers the handlers
-     */
     protected void setChannelHandlers(ChannelHandler... handlers) {
         this.channelHandlers = handlers;
     }
 
-    /**
-     * Gets group.
-     *
-     * @return the group
-     */
     public String getGroup() {
         return group;
     }
 
-    /**
-     * Sets group.
-     *
-     * @param group the group
-     */
     public void setGroup(String group) {
         this.group = group;
     }
 
-    /**
-     * Destroy channel.
-     *
-     * @param channel the channel
-     */
     public void destroyChannel(Channel channel) {
         destroyChannel(getAddressFromChannel(channel), channel);
     }
 
-    /**
-     * Destroy channel.
-     *
-     * @param serverAddress the server address
-     * @param channel       the channel
-     */
     public abstract void destroyChannel(String serverAddress, Channel channel);
 
-    /**
-     * Gets address from context.
-     *
-     * @param ctx the ctx
-     * @return the address from context
-     */
     protected String getAddressFromContext(ChannelHandlerContext ctx) {
         return getAddressFromChannel(ctx.channel());
     }
 
-    /**
-     * Gets address from channel.
-     *
-     * @param channel the channel
-     * @return the address from channel
-     */
     protected String getAddressFromChannel(Channel channel) {
         SocketAddress socketAddress = channel.remoteAddress();
         String address = socketAddress.toString();

@@ -18,6 +18,8 @@ package com.alibaba.fescar.core.protocol;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import lombok.Data;
+
 /**
  * The type Rpc message.
  *
@@ -27,15 +29,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * @FileName: RpcMessage
  * @Description:
  */
+@Data
 public class RpcMessage {
 
     private static AtomicLong NEXT_ID = new AtomicLong(0);
 
-    /**
-     * Gets next message id.
-     *
-     * @return the next message id
-     */
     public static long getNextMessageId() {
         return NEXT_ID.incrementAndGet();
     }
@@ -46,93 +44,4 @@ public class RpcMessage {
     private boolean isHeartbeat;
     private Object body;
 
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
-     * Is async boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isAsync() {
-        return isAsync;
-    }
-
-    /**
-     * Sets async.
-     *
-     * @param async the async
-     */
-    public void setAsync(boolean async) {
-        isAsync = async;
-    }
-
-    /**
-     * Is request boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isRequest() {
-        return isRequest;
-    }
-
-    /**
-     * Sets request.
-     *
-     * @param request the request
-     */
-    public void setRequest(boolean request) {
-        isRequest = request;
-    }
-
-    /**
-     * Is heartbeat boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isHeartbeat() {
-        return isHeartbeat;
-    }
-
-    /**
-     * Sets heartbeat.
-     *
-     * @param heartbeat the heartbeat
-     */
-    public void setHeartbeat(boolean heartbeat) {
-        isHeartbeat = heartbeat;
-    }
-
-    /**
-     * Gets body.
-     *
-     * @return the body
-     */
-    public Object getBody() {
-        return body;
-    }
-
-    /**
-     * Sets body.
-     *
-     * @param body the body
-     */
-    public void setBody(Object body) {
-        this.body = body;
-    }
 }
