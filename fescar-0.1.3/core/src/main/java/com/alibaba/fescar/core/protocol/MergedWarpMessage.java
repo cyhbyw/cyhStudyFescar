@@ -40,7 +40,7 @@ public class MergedWarpMessage extends AbstractMessage implements Serializable, 
     /**
      * The Msgs.
      */
-    public List<AbstractMessage> msgs = new ArrayList<AbstractMessage>();
+    public List<AbstractMessage> msgs = new ArrayList<>();
     /**
      * The Msg ids.
      */
@@ -109,10 +109,6 @@ public class MergedWarpMessage extends AbstractMessage implements Serializable, 
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("FescarMergeMessage ");
-        for (AbstractMessage msg : msgs) {
-            sb.append(msg.toString()).append("\n");
-        }
-        return sb.toString();
+        return "MergedWarpMessage{" + "msgs=" + msgs + '}';
     }
 }

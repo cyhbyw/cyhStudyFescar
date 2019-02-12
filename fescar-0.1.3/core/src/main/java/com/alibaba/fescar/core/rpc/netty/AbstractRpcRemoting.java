@@ -192,7 +192,7 @@ public abstract class AbstractRpcRemoting extends ChannelDuplexHandler {
             }
             basket.offer(rpcMessage);
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("offer message: " + rpcMessage.getBody());
+                LOGGER.debug("Offer_message: " + rpcMessage.getBody());
             }
             if (!isSending) {
                 synchronized (mergeLock) {
