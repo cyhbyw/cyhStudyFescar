@@ -7,7 +7,7 @@
 
     <dubbo:application name="cyh-fescar-sample-dubbo-business"/>
 
-    <dubbo:registry address="multicast://224.5.6.7:1234?unicast=false"/>
+    <dubbo:registry protocol="zookeeper" address="localhost:2181"/>
 
     <dubbo:reference id="orderService" check="false" interface="com.cyh.OrderService"/>
 
