@@ -433,9 +433,7 @@ public final class RmRpcClient extends AbstractRpcRemotingClient {
 
     @Override
     public void sendResponse(long msgId, String serverAddress, Object msg) {
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("RmRpcClient sendResponse " + msg);
-        }
+        LOGGER.info("Send_response_to_server. msgId: {}, msg: {}, serverAddress: {}", msgId, msg, serverAddress);
         super.sendResponse(msgId, connect(serverAddress), msg);
     }
 
