@@ -25,4 +25,9 @@ public class BranchReportResponse extends AbstractTransactionResponse {
     public short getTypeCode() {
         return TYPE_BRANCH_STATUS_REPORT_RESULT;
     }
+
+    @Override
+    public String toString() {
+        return "BranchReportResponse{" + super.toString() + "}";
+    }
 }

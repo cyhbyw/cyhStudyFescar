@@ -25,4 +25,9 @@ public class GlobalStatusResponse extends AbstractGlobalEndResponse {
     public short getTypeCode() {
         return TYPE_GLOBAL_STATUS_RESULT;
     }
+
+    @Override
+    public String toString() {
+        return "GlobalStatusResponse{" + super.toString() + "}";
+    }
 }

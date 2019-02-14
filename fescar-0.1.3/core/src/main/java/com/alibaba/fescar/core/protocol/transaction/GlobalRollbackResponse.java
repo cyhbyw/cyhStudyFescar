@@ -25,4 +25,9 @@ public class GlobalRollbackResponse extends AbstractGlobalEndResponse {
     public short getTypeCode() {
         return TYPE_GLOBAL_ROLLBACK_RESULT;
     }
+
+    @Override
+    public String toString() {
+        return "GlobalRollbackResponse{" + super.toString() + "}";
+    }
 }

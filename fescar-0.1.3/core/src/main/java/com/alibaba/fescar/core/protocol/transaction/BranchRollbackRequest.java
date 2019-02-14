@@ -32,4 +32,9 @@ public class BranchRollbackRequest extends AbstractBranchEndRequest {
     public AbstractTransactionResponse handle(RpcContext rpcContext) {
         return handler.handle(this);
     }
+
+    @Override
+    public String toString() {
+        return "BranchRollbackRequest{" + super.toString() + "}";
+    }
 }

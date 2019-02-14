@@ -27,4 +27,9 @@ public class BranchRollbackResponse extends AbstractBranchEndResponse {
     public short getTypeCode() {
         return AbstractMessage.TYPE_BRANCH_ROLLBACK_RESULT;
     }
+
+    @Override
+    public String toString() {
+        return "BranchRollbackResponse{" + super.toString() + "}";
+    }
 }

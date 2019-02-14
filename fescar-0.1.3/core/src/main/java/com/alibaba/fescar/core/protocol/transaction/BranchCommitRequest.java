@@ -33,4 +33,9 @@ public class BranchCommitRequest extends AbstractBranchEndRequest {
     public AbstractTransactionResponse handle(RpcContext rpcContext) {
         return handler.handle(this);
     }
+
+    @Override
+    public String toString() {
+        return "BranchCommitRequest{" + super.toString() + "}";
+    }
 }

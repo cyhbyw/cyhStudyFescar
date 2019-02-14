@@ -27,4 +27,9 @@ public class BranchCommitResponse extends AbstractBranchEndResponse {
     public short getTypeCode() {
         return AbstractMessage.TYPE_BRANCH_COMMIT_RESULT;
     }
+
+    @Override
+    public String toString() {
+        return "BranchCommitResponse{" + super.toString() + "}";
+    }
 }
