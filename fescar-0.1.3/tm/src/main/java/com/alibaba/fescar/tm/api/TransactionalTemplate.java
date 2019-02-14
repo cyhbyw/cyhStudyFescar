@@ -16,6 +16,9 @@
 
 package com.alibaba.fescar.tm.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.fescar.core.exception.TransactionException;
 
 /**
@@ -23,13 +26,8 @@ import com.alibaba.fescar.core.exception.TransactionException;
  */
 public class TransactionalTemplate {
 
-    /**
-     * Execute object.
-     *
-     * @param business the business
-     * @return the object
-     * @throws TransactionalExecutor.ExecutionException the execution exception
-     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionalTemplate.class);
+
     public Object execute(TransactionalExecutor business) throws TransactionalExecutor.ExecutionException {
 
         // 1. get or create a transaction
@@ -37,23 +35,31 @@ public class TransactionalTemplate {
 
         // 2. begin transaction
         try {
+            LOGGER.debug("开始全局事务--开始");
             tx.begin(business.timeout(), business.name());
+            LOGGER.debug("开始全局事务--成功");
         } catch (TransactionException txe) {
+            LOGGER.debug("开始全局事务--异常", txe);
             throw new TransactionalExecutor.ExecutionException(tx, txe, TransactionalExecutor.Code.BeginFailure);
         }
 
         Object rs = null;
         try {
             // Do Your Business
+            LOGGER.debug("执行业务逻辑--开始");
             rs = business.execute();
+            LOGGER.debug("执行业务逻辑--成功");
         } catch (Throwable ex) {
+            LOGGER.debug("执行业务逻辑--异常，将进行回滚", ex);
             // 3. any business exception, rollback.
             try {
                 tx.rollback();
                 // 3.1 Successfully rolled back
+                LOGGER.debug("执行业务逻辑--异常，回滚成功");
                 throw new TransactionalExecutor.ExecutionException(tx, TransactionalExecutor.Code.RollbackDone, ex);
             } catch (TransactionException txe) {
                 // 3.2 Failed to rollback
+                LOGGER.debug("执行业务逻辑--异常，回滚失败");
                 throw new TransactionalExecutor.ExecutionException(tx, txe, TransactionalExecutor.Code.RollbackFailure,
                         ex);
             } finally {
@@ -63,8 +69,11 @@ public class TransactionalTemplate {
 
         // 4. everything is fine, commit.
         try {
+            LOGGER.debug("提交全局事务--开始");
             tx.commit();
+            LOGGER.debug("提交全局事务--成功");
         } catch (TransactionException txe) {
+            LOGGER.debug("提交全局事务--异常", txe);
             // 4.1 Failed to commit
             throw new TransactionalExecutor.ExecutionException(tx, txe, TransactionalExecutor.Code.CommitFailure);
         } finally {

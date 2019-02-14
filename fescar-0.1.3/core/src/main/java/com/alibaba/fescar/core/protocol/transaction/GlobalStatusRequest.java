@@ -32,4 +32,9 @@ public class GlobalStatusRequest extends AbstractGlobalEndRequest {
     public AbstractTransactionResponse handle(RpcContext rpcContext) {
         return handler.handle(this, rpcContext);
     }
+
+    @Override
+    public String toString() {
+        return "GlobalStatusRequest{" + super.toString() + "}";
+    }
 }

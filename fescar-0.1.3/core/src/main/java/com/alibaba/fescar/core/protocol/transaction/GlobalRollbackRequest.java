@@ -31,4 +31,9 @@ public class GlobalRollbackRequest extends AbstractGlobalEndRequest {
     public AbstractTransactionResponse handle(RpcContext rpcContext) {
         return handler.handle(this, rpcContext);
     }
+
+    @Override
+    public String toString() {
+        return "GlobalRollbackRequest{" + super.toString() + "}";
+    }
 }
