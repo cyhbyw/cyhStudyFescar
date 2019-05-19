@@ -306,7 +306,8 @@ public class DefaultCoordinator extends AbstractTCInboundHandler
                 }
 
             }
-        }, 0, 2, TimeUnit.MILLISECONDS);
+        }, 0, 100, TimeUnit.MILLISECONDS);
+        /**************** CYH: change from 2 to 100, to avoid too much log, for debug purpose ****************/
     }
 
     @Override
